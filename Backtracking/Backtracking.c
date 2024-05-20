@@ -160,7 +160,7 @@ int main() {
     } else {
         printf("Number of paths found: %d\n", pathCount);
         printf("All paths:\n");
-        for (int i = 0; i < pathCount; i++) {
+        for (int i = 0; i < 4; i++) {
             printf("Path %d:\n", i + 1);
             printPathOnMaze(maze, rows, cols, allPaths[i], allPathsLength[i]);
         }
