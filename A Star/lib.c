@@ -109,7 +109,7 @@ void drawPath(int** maze, int row, int col, List* path, Position* start, Positio
   int step = -1; // account for starting node
   while (temp != NULL) {
     step++;
-    map[temp->pos->y][temp->pos->x] = '+';
+    map[temp->pos->y][temp->pos->x] = ' ';
     temp = temp->next;
   }
 
@@ -199,7 +199,9 @@ void aStarSearch(int** maze, int row, int col, Position* start, Position* dest) 
       x = tx;
       y = ty;
     }
-    drawPath(maze, row, col, path, start, dest);
+    printf("Jalan optimal:\n");
     // printList(path);
+    // printf("\n\n");
+    drawPath(maze, row, col, path, start, dest);
   }
 }
