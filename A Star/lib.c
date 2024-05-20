@@ -201,7 +201,6 @@ void aStarSearch(int** maze, int row, int col, Position* start, Position* dest) 
     }
     printf("Jalan optimal:\n");
     // printList(path);
-    // printf("\n\n");
     drawPath(maze, row, col, path, start, dest);
   }
 }

@@ -196,11 +196,11 @@ int main() {
         return 0;
     }
 
-    if (!isSegiempat(file)) {
-        printf("Bentuk maze tidak segi empat.\n");
-        fclose(file);
-        return 0;
-    }
+    // if (!isSegiempat(file)) {
+    //     printf("Bentuk maze tidak segi empat.\n");
+    //     fclose(file);
+    //     return 0;
+    // }
 
     getMatrixSize(file, &rows, &cols);
 
@@ -219,18 +219,18 @@ int main() {
     if (dp[endX][endY].length == INF) {
         printf("Tidak ada jalur yang ditemukan.\n");
     } else {
-        printAllPaths(Map, endX, endY);
+        // printAllPaths(Map, endX, endY);
         printShortest(endX, endY);
-        printLongest(Map, rows, cols, startX, startY, endX, endY);
+        // printLongest(Map, rows, cols, startX, startY, endX, endY);
     }
 
     gettimeofday(&end, NULL);
 
     long seconds = end.tv_sec - start.tv_sec;
     long micros = end.tv_usec - start.tv_usec;
-    double elapsed = seconds + micros / 1e6;
+    double elapsed = seconds * 1e3 + micros / 1e3;
 
-    printf("\nWaktu yang dibutuhkan : %.6f detik\n", elapsed);
+    printf("\nWaktu yang dibutuhkan : %.6f ms\n", elapsed);
 
     for (int i = 0; i < rows; i++) {
         free(Map[i]);
