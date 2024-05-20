@@ -133,8 +133,10 @@ int main() {
     struct timeval start, end;
     gettimeofday(&start, NULL);
 
-    // Replace "maze.txt" with the name of the file you want to read
-    readMazeFromFile("maze.txt", maze, &rows, &cols);
+    char filename[100];
+    printf("Enter the maze file name: ");
+    scanf("%s", filename);
+    readMazeFromFile(filename, maze, &rows, &cols);
      if (!validContent(maze, rows, cols)) {
         printf("Invalid Maze\n");
         return 1;
