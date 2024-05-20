@@ -7,30 +7,32 @@ void readMaze(char* filename, int*** pMaze, int* pRows, int* pCols, int** pStart
     FILE* file = fopen(filename, "r");
     if (!file) {
         printf("File tidak ditemukan.\n");
-        exit(0);
+        exit(EXIT_FAILURE);
     }
 
     char line[1024];
     int rowCount = 0;
     int colCount = 0;
 
+    // First pass to determine row and column count
     if (fgets(line, sizeof(line), file)) {
-        colCount = strlen(line) - 1;
+        colCount = strcspn(line, "\n");
         rowCount++;
         while (fgets(line, sizeof(line), file)) {
-            if (strlen(line) - 1 != colCount){
+            if (strcspn(line, "\n") != colCount) {
                 printf("Bentuk maze bukan persegi atau persegi panjang!\n");
                 fclose(file);
-                exit(0);
+                exit(EXIT_FAILURE);
             }
             rowCount++;
         }
     } else {
         printf("File kosong!\n");
         fclose(file);
-        exit(0);
+        exit(EXIT_FAILURE);
     }
 
+    // Allocate memory for maze, start, and destination positions
     *pRows = rowCount;
     *pCols = colCount;
     *pMaze = malloc(rowCount * sizeof(int*));
@@ -60,9 +62,9 @@ void readMaze(char* filename, int*** pMaze, int* pRows, int* pCols, int** pStart
             } else if (ch == '#') {
                 (*pMaze)[i][j] = 0;
             } else {
-                fprintf(stderr, "Terdapat karakter tidak valid!\n", ch);
+                fprintf(stderr, "Terdapat karakter tidak valid: %c\n", ch);
                 fclose(file);
-                exit(0);
+                exit(EXIT_FAILURE);
             }
         }
         i++;
@@ -273,12 +275,18 @@ void dijkstra(int** maze, int rows, int cols, int* start, int* dest) {
             }
         }
     }
-    int counter = 0; 
+
     int destX = dest[0];
     int destY = dest[1];
-    printf("All shortest path from start to end:\n\n");
-    findAllPaths(prev, rows, cols, destX, destY, NULL, &counter);
-    printf("\nJumlah jalur tersedia : %d\n\n", counter);
+
+    if (dist[destX][destY] == INT_MAX) {
+        printf("Tidak ada jalur dari start ke end.\n");
+    } else {
+        int counter = 0; 
+        printf("All shortest path from start to end:\n");
+        findAllPaths(prev, rows, cols, destX, destY, NULL, &counter);
+        printf("\nJumlah jalur terpendek tersedia : %d\n", counter);
+    }
 
     for (int i = 0; i < rows; i++) {
         free(dist[i]);
