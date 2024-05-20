@@ -76,6 +76,17 @@ void printPathOnMaze(char maze[MAX_SIZE][MAX_SIZE], int rows, int cols, int path
     printf("\n");
 }
 
+int validContent(char maze[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if(maze[i][j]!='.' && maze[i][j]!='#' && maze[i][j]!='S' && maze[i][j]!='E'){
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
 // Backtracking function to find paths from S to E
 void findPaths(char maze[MAX_SIZE][MAX_SIZE], int rows, int cols, int x, int y, int path[][2], int pathLen, int *pathCount, int allPaths[MAX_SIZE][MAX_SIZE][2], int *allPathsLength) {
     // If the current position is 'E', we've found a path
@@ -124,6 +135,10 @@ int main() {
 
     // Replace "maze.txt" with the name of the file you want to read
     readMazeFromFile("maze.txt", maze, &rows, &cols);
+     if (!validContent(maze, rows, cols)) {
+        printf("Invalid Maze\n");
+        return 1;
+    }
 
     int startRow, startCol;
     findStart(maze, rows, cols, &startRow, &startCol);
