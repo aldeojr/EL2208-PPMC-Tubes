@@ -131,7 +131,7 @@ int main() {
     char maze[MAX_SIZE][MAX_SIZE];
     int rows, cols;
     struct timeval start, end;
-    gettimeofday(&start, NULL);
+
 
     char filename[100];
     printf("Enter the maze file name: ");
@@ -143,6 +143,7 @@ int main() {
     }
 
     int startRow, startCol;
+    gettimeofday(&start, NULL);
     findStart(maze, rows, cols, &startRow, &startCol);
 
     int path[MAX_SIZE * MAX_SIZE][2];
