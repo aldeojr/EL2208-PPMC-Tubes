@@ -160,14 +160,14 @@ int main() {
     } else {
         printf("Number of paths found: %d\n", pathCount);
         printf("All paths:\n");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             printf("Path %d:\n", i + 1);
             printPathOnMaze(maze, rows, cols, allPaths[i], allPathsLength[i]);
         }
         printf("Shortest path found:\n");
         int shortestPathIndex = 0;
         int shortestPathLength = allPathsLength[0];
-        for (int i = 1; i < pathCount; i++) {
+        for (int i = 1; i < pathCount && i<3; i++) {
             if (allPathsLength[i] < shortestPathLength) {
                 shortestPathIndex = i;
                 shortestPathLength = allPathsLength[i];
