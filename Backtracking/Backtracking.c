@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <sys/time.h>
 #define MAX_SIZE 100
 
 // Directions for movement: right, down, left, up
@@ -119,6 +119,8 @@ void findPaths(char maze[MAX_SIZE][MAX_SIZE], int rows, int cols, int x, int y, 
 int main() {
     char maze[MAX_SIZE][MAX_SIZE];
     int rows, cols;
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
 
     // Replace "maze.txt" with the name of the file you want to read
     readMazeFromFile("maze.txt", maze, &rows, &cols);
@@ -166,6 +168,12 @@ int main() {
         printf("longest path found:\n");
         printPathOnMaze(maze, rows, cols, allPaths[longestPathIndex], allPathsLength[longestPathIndex]);
     }
+        gettimeofday(&end, NULL);
 
-    return 0;
+        long seconds = end.tv_sec - start.tv_sec;
+        long micros = end.tv_usec - start.tv_usec;
+        double elapsed = seconds * 1e3 + micros / 1e3;
+
+        printf("\nWaktu yang dibutuhkan : %.6f ms\n", elapsed);
+        return 0;
 }
