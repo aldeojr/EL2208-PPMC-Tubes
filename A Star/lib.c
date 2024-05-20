@@ -116,13 +116,13 @@ void drawPath(int** maze, int row, int col, List* path, Position* start, Positio
   map[start->y][start->x] = 'S';
   map[dest->y][dest->x] = 'E';
 
+  printf("Jumlah langkah: %d\n", step);
   for (int y = 0; y < row; y++) {
     for (int x = 0; x < col; x++) {
       printf("%c ", map[y][x]);
     }
     printf("\n");
   }
-  printf("Steps taken: %d\n", step);
 }
 
 void aStarSearch(int** maze, int row, int col, Position* start, Position* dest) {
@@ -203,4 +203,82 @@ void aStarSearch(int** maze, int row, int col, Position* start, Position* dest) 
     // printList(path);
     drawPath(maze, row, col, path, start, dest);
   }
+}
+
+// BACKTRACKING -- ADAPTED
+void printSolution(int** maze, int** sol, int row, int col, int len) {
+  char map[row][col];
+  printf("Jumlah langkah: %d\n", len);
+  for (int y = 0; y < row; y++) {
+      for (int x = 0; x < col; x++) {
+          if (sol[y][x]) map[y][x] = ' ';
+          else if (maze[y][x]) map[y][x] = '.';
+          else map[y][x] = '#';
+      }
+  }
+
+  for (int y = 0; y < row; y++) {
+    for (int x = 0; x < col; x++) {
+      printf("%c ", map[y][x]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
+
+void findAllPathsInner(int** maze, int row, int col, Position* curr, Position* dest, int** sol, int* pNum, int len, int* maxLen, int** longest) {
+  if (curr->x == dest->x && curr->y == dest->y) {
+    sol[curr->y][curr->x] = 1;
+    (*pNum)++;
+    if ((*pNum) < 5) {
+      printf("Jalan ke-%d:\n", (*pNum));
+      printSolution(maze, sol, row, col, len);
+    }
+    if (len > *maxLen) {
+      *maxLen = len;
+      for (int y = 0; y < row; y++) {
+        for (int x = 0; x < col; x++) {
+          longest[y][x] = sol[y][x];
+        }
+      }
+    }
+    sol[curr->y][curr->x] = 0;
+    return;
+  }
+
+  if (isValid(curr, row, col) && maze[curr->y][curr->x] == 1 && sol[curr->y][curr->x] == 0) {
+    sol[curr->y][curr->x] = 1;
+    int dy[4] = {-1, 0, 1, 0};
+    int dx[4] = {0, -1, 0, 1};
+    for (int i = 0; i < 4; i++) {
+      Position* neighbor = malloc(sizeof(Position));
+      neighbor->y = curr->y + dy[i];
+      neighbor->x = curr->x + dx[i];
+      findAllPathsInner(maze, row, col, neighbor, dest, sol, pNum, len + 1, maxLen, longest);
+    }
+    sol[curr->y][curr->x] = 0;
+  }
+}
+
+void findAllPaths(int** maze, int row, int col, Position* start, Position* dest) {
+  int** sol = malloc(sizeof(int*) * row);
+  int** longest = malloc(sizeof(int*) * row);
+  for (int y = 0; y < row; y++) {
+    sol[y] = malloc(sizeof(int) * col);
+    longest[y] = malloc(sizeof(int) * col);
+    for (int x = 0; x < col; x++) {
+      sol[y][x] = 0;
+      longest[y][x] = 0;
+    }
+  }
+
+  Position* curr = malloc(sizeof(Position));
+  curr->x = start->x;
+  curr->y = start->y;
+  int num = 0, maxLen = 0;
+  findAllPathsInner(maze, row, col, curr, dest, sol, &num, 0, &maxLen, longest);
+  printf("Jumlah jalan: %d\n", num);
+
+  printf("\nJalan terpanjang:\n");
+  printSolution(maze, longest, row, col, maxLen);
 }

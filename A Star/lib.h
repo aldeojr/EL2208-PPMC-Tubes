@@ -16,5 +16,6 @@ void push(List** pList, Position* pos);
 Position* pop(List** pList);
 
 void aStarSearch(int** maze, int row, int col, Position* start, Position* dest);
+void findAllPaths(int** maze, int row, int col, Position* start, Position* dest);
 
 #endif

@@ -16,6 +16,8 @@ int main() {
 
   readMaze(filename, &maze, &row, &col, start, dest);
   
+  findAllPaths(maze, row, col, start, dest);
+
   struct timeval begin, end;
   gettimeofday(&begin, 0);
   aStarSearch(maze, row, col, start, dest);
